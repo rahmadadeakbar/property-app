@@ -1,4 +1,4 @@
-# testapp
+# propertyapp
 
 A new Flutter project.
 

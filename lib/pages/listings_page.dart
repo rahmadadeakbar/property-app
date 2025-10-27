@@ -18,14 +18,28 @@ class ListingsPage extends StatelessWidget {
         itemBuilder: (context, index) {
           final p = listings[index];
           return GestureDetector(
-            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => PropertyDetailPage(property: p))),
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => PropertyDetailPage(property: p),
+              ),
+            ),
             child: Card(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
               child: Row(
                 children: [
                   ClipRRect(
-                    borderRadius: BorderRadius.horizontal(left: Radius.circular(10)),
-                    child: Image.network(p.imageUrl, width: 120, height: 90, fit: BoxFit.cover),
+                    borderRadius: BorderRadius.horizontal(
+                      left: Radius.circular(10),
+                    ),
+                    child: Image.network(
+                      p.imageUrl,
+                      width: 120,
+                      height: 90,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                   Expanded(
                     child: Padding(
@@ -33,21 +47,42 @@ class ListingsPage extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(p.title, style: TextStyle(fontWeight: FontWeight.bold)),
+                          Text(
+                            p.title,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
                           SizedBox(height: 6),
-                          Text(p.location, style: TextStyle(color: Colors.black54, fontSize: 12)),
+                          Text(
+                            p.location,
+                            style: TextStyle(
+                              color: Colors.black54,
+                              fontSize: 12,
+                            ),
+                          ),
                           SizedBox(height: 6),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(p.price, style: TextStyle(color: Colors.indigo, fontWeight: FontWeight.bold)),
-                              Text('${p.beds}bd • ${p.baths}ba • ${p.area}m²', style: TextStyle(color: Colors.black45, fontSize: 12)),
+                              Text(
+                                p.price,
+                                style: TextStyle(
+                                  color: Colors.indigo,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                '${p.beds}bd • ${p.baths}ba • ${p.area}m²',
+                                style: TextStyle(
+                                  color: Colors.black45,
+                                  fontSize: 12,
+                                ),
+                              ),
                             ],
-                          )
+                          ),
                         ],
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),

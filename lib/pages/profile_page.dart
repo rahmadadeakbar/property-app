@@ -12,16 +12,30 @@ class ProfilePage extends StatelessWidget {
           children: [
             Row(
               children: [
-                CircleAvatar(radius: 40, backgroundImage: NetworkImage('https://picsum.photos/seed/me/200')),
+                CircleAvatar(
+                  radius: 40,
+                  backgroundImage: NetworkImage(
+                    'https://picsum.photos/seed/me/200',
+                  ),
+                ),
                 SizedBox(width: 12),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Rahmad Ade Akbar', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                    Text(
+                      'Rahmad Ade Akbar',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     SizedBox(height: 4),
-                    Text('raatechnomedia@gmail.com', style: TextStyle(color: Colors.black54)),
+                    Text(
+                      'raatechnomedia@gmail.com',
+                      style: TextStyle(color: Colors.black54),
+                    ),
                   ],
-                )
+                ),
               ],
             ),
             SizedBox(height: 18),
@@ -37,9 +51,17 @@ class ProfilePage extends StatelessWidget {
             ),
             SizedBox(height: 18),
             ListTile(leading: Icon(Icons.settings), title: Text('Settings')),
-            ListTile(leading: Icon(Icons.help_outline), title: Text('Help & Support')),
+            ListTile(
+              leading: Icon(Icons.help_outline),
+              title: Text('Help & Support'),
+            ),
             Spacer(),
-            Center(child: ElevatedButton(onPressed: () {}, child: Text('Edit Profile'))),
+            Center(
+              child: ElevatedButton(
+                onPressed: () {},
+                child: Text('Edit Profile'),
+              ),
+            ),
           ],
         ),
       ),
@@ -52,7 +74,10 @@ class ProfilePage extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: 12, horizontal: 18),
         child: Column(
           children: [
-            Text(value, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+            Text(
+              value,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            ),
             SizedBox(height: 4),
             Text(label, style: TextStyle(color: Colors.black54)),
           ],
