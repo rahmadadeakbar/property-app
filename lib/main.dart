@@ -13,8 +13,17 @@ class PropertyDashApp extends StatelessWidget {
       title: 'Properti Dash',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.indigo,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+        colorSchemeSeed: Colors.indigo,
+        brightness: Brightness.light,
+        useMaterial3: true,
+        appBarTheme: const AppBarTheme(elevation: 0, centerTitle: false),
+        cardTheme: CardThemeData(
+          color: Colors.white,
+          elevation: 4,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
+        ),
       ),
       home: DashboardPage(),
     );
@@ -51,16 +60,16 @@ class _DashboardPageState extends State<DashboardPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Dashboard Properti'),
+        title: const Text('Dashboard Properti'),
         actions: [
-          IconButton(icon: Icon(Icons.search), onPressed: () {}),
+          IconButton(icon: const Icon(Icons.search), onPressed: () {}),
           Stack(
             children: [
               IconButton(
-                icon: Icon(Icons.notifications_none),
+                icon: const Icon(Icons.notifications_none),
                 onPressed: () {},
               ),
-              Positioned(
+              const Positioned(
                 right: 12,
                 top: 12,
                 child: CircleAvatar(radius: 6, backgroundColor: Colors.red),
@@ -94,27 +103,45 @@ class _DashboardPageState extends State<DashboardPage> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {},
-        icon: Icon(Icons.add),
-        label: Text('Tambah Listing'),
+        icon: const Icon(Icons.add),
+        label: const Text('Tambah Listing'),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _onNavTap,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.dashboard),
-            label: 'Dashboard',
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+        child: Material(
+          elevation: 12,
+          borderRadius: BorderRadius.circular(16),
+          clipBehavior: Clip.antiAlias,
+          child: BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
+            backgroundColor: Colors.indigo,
+            selectedItemColor: Colors.white,
+            unselectedItemColor: Colors.white70,
+            showUnselectedLabels: true,
+            selectedLabelStyle: const TextStyle(fontWeight: FontWeight.w600),
+            unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w400),
+            currentIndex: _selectedIndex,
+            onTap: _onNavTap,
+            items: const [
+              BottomNavigationBarItem(
+                icon: Icon(Icons.dashboard_rounded),
+                label: 'Dashboard',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.view_list_rounded),
+                label: 'Listings',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.chat_bubble_outline_rounded),
+                label: 'Messages',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.person_outline_rounded),
+                label: 'Profile',
+              ),
+            ],
           ),
-          BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Listings'),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.chat_bubble_outline),
-            label: 'Messages',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline),
-            label: 'Profile',
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -143,15 +170,22 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   Widget _buildHeader() {
+    final cs = Theme.of(context).colorScheme;
     return Container(
-      padding: EdgeInsets.all(16),
+      padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(16),
         gradient: LinearGradient(
-          colors: [Colors.indigo.shade700, Colors.indigo.shade400],
+          colors: [cs.primaryContainer, cs.primary.withOpacity(0.9)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
-        boxShadow: [
-          BoxShadow(color: Colors.black12, blurRadius: 8, offset: Offset(0, 4)),
+        boxShadow: const [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 10,
+            offset: Offset(0, 6),
+          ),
         ],
       ),
       child: Row(
@@ -160,37 +194,37 @@ class _DashboardPageState extends State<DashboardPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   'Selamat Datang, Ade',
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
-                SizedBox(height: 8),
-                Text(
+                const SizedBox(height: 8),
+                const Text(
                   'Kelola listing properti Anda. Lihat performa, tambahkan listing, dan terima penawaran.',
                   style: TextStyle(color: Colors.white70),
                 ),
-                SizedBox(height: 12),
+                const SizedBox(height: 14),
                 Row(
                   children: [
                     _miniStat('Listings', '124'),
-                    SizedBox(width: 12),
+                    const SizedBox(width: 16),
                     _miniStat('Penjualan', '28'),
                   ],
                 ),
               ],
             ),
           ),
-          SizedBox(width: 12),
+          const SizedBox(width: 12),
           ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: Image.network(
-              'https://picsum.photos/seed/house/120/120',
-              width: 100,
-              height: 100,
+            borderRadius: BorderRadius.circular(12),
+            child: _networkImage(
+              'https://picsum.photos/seed/house/200/200',
+              width: 96,
+              height: 96,
               fit: BoxFit.cover,
             ),
           ),
@@ -230,24 +264,30 @@ class _DashboardPageState extends State<DashboardPage> {
   Widget _metricCard(IconData icon, String label, String value) {
     return Expanded(
       child: Card(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        elevation: 2,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+        elevation: 3,
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+          padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 14),
           child: Row(
             children: [
               CircleAvatar(
                 backgroundColor: Colors.indigo.shade50,
                 child: Icon(icon, color: Colors.indigo),
               ),
-              SizedBox(width: 8),
+              const SizedBox(width: 10),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(value, style: TextStyle(fontWeight: FontWeight.bold)),
+                  Text(
+                    value,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
                   Text(
                     label,
-                    style: TextStyle(color: Colors.black54, fontSize: 12),
+                    style: const TextStyle(color: Colors.black54, fontSize: 12),
                   ),
                 ],
               ),
@@ -267,18 +307,30 @@ class _DashboardPageState extends State<DashboardPage> {
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
         if (actionLabel != null)
-          TextButton(onPressed: () {}, child: Text(actionLabel)),
+          TextButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => ListingsPage(
+                    listings: [...sampleFeatured, ...sampleRecent],
+                  ),
+                ),
+              );
+            },
+            child: Text(actionLabel),
+          ),
       ],
     );
   }
 
   Widget _buildFeaturedList() {
     return SizedBox(
-      height: 220,
+      height: 240,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         itemCount: sampleFeatured.length,
-        separatorBuilder: (_, __) => SizedBox(width: 12),
+        separatorBuilder: (_, __) => const SizedBox(width: 12),
         itemBuilder: (context, index) {
           final p = sampleFeatured[index];
           return GestureDetector(
@@ -288,52 +340,127 @@ class _DashboardPageState extends State<DashboardPage> {
                 builder: (_) => PropertyDetailPage(property: p),
               ),
             ),
-            child: Container(
+            child: SizedBox(
               width: 320,
               child: Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                elevation: 3,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     ClipRRect(
-                      borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(12),
+                      borderRadius: const BorderRadius.vertical(
+                        top: Radius.circular(14),
                       ),
-                      child: Image.network(
-                        p.imageUrl,
-                        height: 130,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
+                      child: Stack(
+                        children: [
+                          Hero(
+                            tag: p.id,
+                            child: _networkImage(
+                              p.imageUrl,
+                              height: 150,
+                              width: double.infinity,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          Positioned(
+                            right: 8,
+                            top: 8,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 6,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.black54,
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Text(
+                                p.price,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            left: 8,
+                            bottom: 8,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 6,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.black45,
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Row(
+                                children: [
+                                  const Icon(
+                                    Icons.bed,
+                                    size: 14,
+                                    color: Colors.white,
+                                  ),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    '${p.beds}',
+                                    style: const TextStyle(color: Colors.white),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  const Icon(
+                                    Icons.bathtub,
+                                    size: 14,
+                                    color: Colors.white,
+                                  ),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    '${p.baths}',
+                                    style: const TextStyle(color: Colors.white),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  const Icon(
+                                    Icons.square_foot,
+                                    size: 14,
+                                    color: Colors.white,
+                                  ),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    '${p.area} m²',
+                                    style: const TextStyle(color: Colors.white),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(12),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             p.title,
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: const TextStyle(fontWeight: FontWeight.w700),
                           ),
-                          SizedBox(height: 6),
+                          const SizedBox(height: 6),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
-                                p.location,
-                                style: TextStyle(
-                                  color: Colors.black54,
-                                  fontSize: 12,
-                                ),
+                              const Icon(
+                                Icons.place_outlined,
+                                size: 16,
+                                color: Colors.black45,
                               ),
-                              Text(
-                                p.price,
-                                style: TextStyle(
-                                  color: Colors.indigo,
-                                  fontWeight: FontWeight.bold,
+                              const SizedBox(width: 4),
+                              Expanded(
+                                child: Text(
+                                  p.location,
+                                  style: const TextStyle(
+                                    color: Colors.black54,
+                                    fontSize: 12,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               ),
                             ],
@@ -359,7 +486,7 @@ class _DashboardPageState extends State<DashboardPage> {
         crossAxisCount: 2,
         crossAxisSpacing: 8,
         mainAxisSpacing: 8,
-        childAspectRatio: 0.9,
+        childAspectRatio: 0.86,
       ),
       itemCount: sampleRecent.length,
       itemBuilder: (context, index) {
@@ -371,56 +498,112 @@ class _DashboardPageState extends State<DashboardPage> {
           ),
           child: Card(
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(14),
             ),
-            elevation: 2,
+            elevation: 3,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
                   child: ClipRRect(
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(10),
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(14),
                     ),
-                    child: Image.network(
-                      p.imageUrl,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
+                    child: Stack(
+                      children: [
+                        Hero(
+                          tag: p.id,
+                          child: _networkImage(
+                            p.imageUrl,
+                            width: double.infinity,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        Positioned(
+                          right: 8,
+                          top: 8,
+                          child: CircleAvatar(
+                            radius: 16,
+                            backgroundColor: Colors.white,
+                            child: Icon(
+                              Icons.favorite_border,
+                              size: 18,
+                              color: Colors.redAccent.shade200,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         p.title,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w700,
                           fontSize: 13,
                         ),
                       ),
-                      SizedBox(height: 4),
-                      Text(
-                        p.location,
-                        style: TextStyle(color: Colors.black54, fontSize: 12),
+                      const SizedBox(height: 4),
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.place_outlined,
+                            size: 14,
+                            color: Colors.black45,
+                          ),
+                          const SizedBox(width: 4),
+                          Expanded(
+                            child: Text(
+                              p.location,
+                              style: const TextStyle(
+                                color: Colors.black54,
+                                fontSize: 12,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
                       ),
-                      SizedBox(height: 6),
+                      const SizedBox(height: 6),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
                             p.price,
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.indigo,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          Icon(
-                            Icons.favorite_border,
-                            size: 18,
-                            color: Colors.grey,
+                          Row(
+                            children: [
+                              const Icon(
+                                Icons.bed,
+                                size: 14,
+                                color: Colors.black45,
+                              ),
+                              const SizedBox(width: 2),
+                              Text(
+                                '${p.beds}',
+                                style: const TextStyle(fontSize: 12),
+                              ),
+                              const SizedBox(width: 8),
+                              const Icon(
+                                Icons.bathtub,
+                                size: 14,
+                                color: Colors.black45,
+                              ),
+                              const SizedBox(width: 2),
+                              Text(
+                                '${p.baths}',
+                                style: const TextStyle(fontSize: 12),
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -429,6 +612,53 @@ class _DashboardPageState extends State<DashboardPage> {
                 ),
               ],
             ),
+          ),
+        );
+      },
+    );
+  }
+
+  // Reusable network image with loading and error state to work reliably on Android
+  Widget _networkImage(
+    String url, {
+    double? width,
+    double? height,
+    BoxFit? fit,
+  }) {
+    return Image.network(
+      url,
+      width: width,
+      height: height,
+      fit: fit,
+      loadingBuilder: (context, child, loadingProgress) {
+        if (loadingProgress == null) return child;
+        return Container(
+          width: width,
+          height: height,
+          color: Colors.black12,
+          alignment: Alignment.center,
+          child: SizedBox(
+            width: 24,
+            height: 24,
+            child: CircularProgressIndicator(
+              strokeWidth: 2.2,
+              value: loadingProgress.expectedTotalBytes != null
+                  ? loadingProgress.cumulativeBytesLoaded /
+                        (loadingProgress.expectedTotalBytes ?? 1)
+                  : null,
+            ),
+          ),
+        );
+      },
+      errorBuilder: (context, error, stackTrace) {
+        return Container(
+          width: width,
+          height: height,
+          color: Colors.grey.shade200,
+          alignment: Alignment.center,
+          child: const Icon(
+            Icons.image_not_supported_outlined,
+            color: Colors.black38,
           ),
         );
       },
