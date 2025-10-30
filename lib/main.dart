@@ -1,10 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'models/property.dart';
 import 'pages/listings_page.dart';
 import 'pages/profile_page.dart';
 import 'pages/property_detail_page.dart';
+import 'pages/messages_page.dart';
 
-void main() => runApp(PropertyDashApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Try to initialize Firebase, but don't fail if not configured
+  try {
+    await Firebase.initializeApp();
+  } catch (e) {
+    print('Firebase initialization skipped: $e');
+  }
+
+  runApp(PropertyDashApp());
+}
 
 class PropertyDashApp extends StatelessWidget {
   @override
@@ -46,6 +59,13 @@ class _DashboardPageState extends State<DashboardPage> {
           builder: (_) =>
               ListingsPage(listings: [...sampleFeatured, ...sampleRecent]),
         ),
+      );
+      return;
+    }
+    if (index == 2) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (_) => MessagesPage()),
       );
       return;
     }
@@ -154,9 +174,7 @@ class _DashboardPageState extends State<DashboardPage> {
             accountName: Text('Rahmad Ade Akbar'),
             accountEmail: Text('raatechnomedia@gmail.com'),
             currentAccountPicture: CircleAvatar(
-              backgroundImage: NetworkImage(
-                'https://picsum.photos/seed/me/200',
-              ),
+              backgroundImage: NetworkImage('https://i.pravatar.cc/200?img=12'),
             ),
           ),
           ListTile(leading: Icon(Icons.dashboard), title: Text('Dashboard')),
@@ -222,7 +240,7 @@ class _DashboardPageState extends State<DashboardPage> {
           ClipRRect(
             borderRadius: BorderRadius.circular(12),
             child: _networkImage(
-              'https://picsum.photos/seed/house/200/200',
+              'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=200&q=80',
               width: 96,
               height: 96,
               fit: BoxFit.cover,
